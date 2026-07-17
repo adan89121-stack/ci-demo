@@ -1,1 +1,40 @@
+name: Claude PR Review
 
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            你是這個專案的 code reviewer,請針對本次 PR 的變更進行審查。
+
+            審查重點:
+            - 明顯的 bug 或邏輯錯誤
+            - 資安風險(如 SQL injection、硬編碼密鑰)
+            - 缺少的測試覆蓋
+            - 效能疑慮(如不必要的迴圈、N+1 query)
+
+            請針對有問題的行用 inline comment 留言,格式為「[分類] 問題描述 + 建議」。
+            只在真的有問題的地方留言,不要為了留言而留言。
+
+            另外請在 PR 最上方留一則總結留言,包含:
+            1. 本次審查的 checklist(未解決的項目用 - [ ],已解決用 - [x])
+            2. 整體風險等級(低 / 中 / 高)
+
+            如果這是同一個 PR 的後續 commit(synchronize 事件),
+            請先讀取先前留下的 checklist 留言,更新已解決的項目,
+            並只新增真正的新問題,不要重複列出沒有變動的項目。
