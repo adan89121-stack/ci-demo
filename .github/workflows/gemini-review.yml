@@ -1,1 +1,27 @@
+name: Gemini PR Review
 
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: sshnaidm/gemini-code-review-action@v2
+        with:
+          gemini-key: ${{ secrets.GEMINI_API_KEY }}
+          prompt: |
+            請針對這次 PR 的變更進行審查,重點看:
+            - 明顯的 bug 或邏輯錯誤
+            - 資安風險(如 SQL injection、硬編碼密鑰)
+            - 缺少的測試覆蓋
+            - 效能疑慮(如不必要的迴圈、N+1 query)
+
+            只在真的有問題的地方留言,並在最後給一個整體風險等級(低/中/高)。
