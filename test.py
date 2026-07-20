@@ -1,8 +1,4 @@
-def divide(a, b):
-    if b == 0:
-        raise ValueError("不能除以零")
-    return a / b
+a = 10
+b = 5
 
-
-if __name__ == "__main__":
-    print(divide(10, 2))
+print(a / b)  # 輸出結果：2.0
