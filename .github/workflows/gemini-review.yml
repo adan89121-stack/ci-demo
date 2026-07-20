@@ -17,7 +17,7 @@ jobs:
       - uses: sshnaidm/gemini-code-review-action@v2
         with:
           gemini-key: ${{ secrets.GEMINI_API_KEY }}
-          model: gemini-2.0-flash-lite
+          model: model="gemini-2.5-flash",  # 👈 改成這個免費模型
           prompt: |
             請針對這次 PR 的變更進行審查,重點看:
             - 明顯的 bug 或邏輯錯誤
