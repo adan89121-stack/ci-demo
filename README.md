@@ -27,7 +27,4 @@ if __name__ == "__main__":
 
 test1111
 test
-
-# --- 文件結束 ---
-
-
+FFFFFFFF
