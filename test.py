@@ -1,12 +1,14 @@
-API_KEY = "test-1234567890" # 测试
+import os
+
+API_KEY = os.getenv("API_KEY")
 
 def divide(a, b):
     if b == 0:
-        raise ValueError("不能除以零")
+        raise ValueError("b cannot be 0")
     return a / b
 
+def login(username, password):
+    return username == os.getenv("ADMIN_USER") and \
+           password == os.getenv("ADMIN_PASSWORD")
 
-
-if __name__ == "__main__":
-    print(divide(10, 2))    # 输出: 5.0
-    print(divide(10, 4))    # 输出: 2.5
+print(divide(10, 2))   
