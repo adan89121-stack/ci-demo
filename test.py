@@ -11,4 +11,5 @@ def login(username, password):
     return username == os.getenv("ADMIN_USER") and \
            password == os.getenv("ADMIN_PASSWORD")
 
-print(divide(10, 2))   
+print(divide(10, 2))   #輸出: 5.0
+
