@@ -10,6 +10,9 @@ def divide(a, b):
 def login(username, password):
     return username == os.getenv("ADMIN_USER") and \
            password == os.getenv("ADMIN_PASSWORD")
+
+print(divide(10, 2))   
+
 ---------------------------------------------------------------
 
 API_KEY = "123456789"
@@ -23,3 +26,4 @@ def login(username, password):
     return False
 
 print(divide(10, 0))
+print(divide(10, 2))
