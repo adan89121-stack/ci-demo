@@ -1,13 +1,11 @@
-API_KEY = "123456789"
+import os
 
-def divide(a, b):
-    return a / b  
+API_KEY = os.getenv("API_KEY")
 
-def login(username, password):
-    if username == "admin" and password == "123456":
-        return True 
-    return False
+def divide(a, b): if b == 0: raise ValueError("b cannot be 0") return a / b
 
-print(divide(10, 0))    #輸出: ZeroDivisionError: division by zero
-print(divide(10, 2))    #輸出: 5.0
-print(divide(10, 5))    #輸出: 2.0
+def login(username, password): return username == os.getenv("ADMIN_USER") and
+password == os.getenv("ADMIN_PASSWORD")
+
+print(divide(10, 2))
+
