@@ -27,3 +27,6 @@ def login(username, password):
 
 print(divide(10, 0))
 print(divide(10, 2))
+
+
+請根據目前程式碼產生 R.md
