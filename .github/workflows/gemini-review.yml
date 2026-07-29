@@ -1,3 +1,5 @@
+name: Gemini Code Review
+
 on:
   pull_request:
     types: [opened, synchronize]
@@ -20,24 +22,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: sshnaidm/gemini-code-review-action@v2
+      - name: Gemini Code Review (Auto Retry on 503)
+        uses: Wandalen/wretry.action@v3
         with:
-          gemini-key: ${{ secrets.GEMINI_API_KEY }}
-          model: gemini-2.5-flash
-          prompt: |
-            你是一位專業的 Code Reviewer。請審查本次 PR 的程式碼變更（diff）。
+          action: sshnaidm/gemini-code-review-action@v2
+          attempt_limit: 3
+          attempt_delay: 15000
+          with: |
+            gemini-key: ${{ secrets.GEMINI_API_KEY }}
+            model: gemini-2.5-flash
+            prompt: |
+              你是一位專業的 Code Reviewer。請審查本次 PR 的程式碼變更（diff）。
 
-            【審查任務與架構】
-            1. **變更摘要與對比**：
-               - 請先用 2~3 句話簡短總結本次修改的主旨。
-               - 若這是追蹤/更新的 Commit，請簡述「相較於前版/變更前後」做了哪些主要調整或修正。
+              【審查任務與架構】
+              1. **變更摘要與對比**：
+                 - 請先用 2~3 句話簡短總結本次修改的主旨。
+                 - 若這是追蹤/更新的 Commit，請簡述「相較於前版/變更前後」做了哪些主要調整或修正。
 
-            2. **重點審查**：
-               - **邏輯與穩定性**：潛在 Crash、邊界條件（Edge cases）、未處理的例外、邏輯漏洞。
-               - **資訊安全**：Hardcoded 金鑰/密碼、SQL Injection 等資安風險。
-               - **效能與維護性**：無窮迴圈、無效計算或不必要的複雜度。
+              2. **重點審查**：
+                 - **邏輯與穩定性**：潛在 Crash、邊界條件（Edge cases）、未處理的例外、邏輯漏洞。
+                 - **資訊安全**：Hardcoded 金鑰/密碼、SQL Injection 等資安風險。
+                 - **效能與維護性**：無窮迴圈、無效計算或不必要的複雜度。
 
-            【回覆規範】
-            - 務必使用「繁體中文」回覆。
-            - 若發現問題，請務必提供「具體的程式碼修正範例（Code Block）」。
-            - 若無重大問題，請保持簡短，並於最後評估「整體風險等級（低 / 中 / 高）」。
+              【回覆規範】
+              - 務必使用「繁體中文」回覆。
+              - 若發現問題，請務必提供「具體的程式碼修正範例（Code Block）」。
+              - 若無重大問題，請保持簡短，並於最後評估「整體風險等級（低 / 中 / 高）」。
